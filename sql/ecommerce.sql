@@ -40,8 +40,10 @@ CREATE TABLE IF NOT EXISTS cart (
 CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    order_status ENUM('Pending', 'Processing', 'Completed', 'Cancelled') DEFAULT 'Pending',
+    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -62,12 +64,21 @@ INSERT INTO users (name, email, username, password, role) VALUES
 
 -- Sample products
 INSERT INTO products (name, description, price, image) VALUES
-('Product 1', 'Description for product 1', 19.99, 'product1.jpg'),
-('Product 2', 'Description for product 2', 29.99, 'product2.jpg'),
-('Product 3', 'Description for product 3', 39.99, 'product3.jpg');
+('Product 1', 'Description for product 1', 19.99, 'product1.png'),
+('Product 2', 'Description for product 2', 29.99, 'product2.png'),
+('Product 3', 'Description for product 3', 39.99, 'product3.png');
 
 -- Sample users
 INSERT INTO users (name, email, username, password, role) VALUES
 ('Test User', 'testuser@example.com', 'testuser', SHA2('password123', 256), 'user');
 
 SELECT * FROM ecommerce.users;
+
+ALTER TABLE orders ADD COLUMN shipping_address TEXT NOT NULL;
+
+ALTER TABLE orders ADD COLUMN payment_method ENUM('Credit Card', 'PayPal', 'Bank Transfer', 'Cash on Delivery') NOT NULL;
+
+SHOW COLUMNS FROM orders LIKE 'payment_method';
+
+SELECT * FROM products
+
