@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../includes/header.php'; // Include the header
+include 'includes/header.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Database connection
 include '../config/db.php';
+
 
 $userId = $_SESSION['user_id'];
 

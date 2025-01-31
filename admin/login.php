@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $id = $row['id'];
                         $hashed_password = $row['password'];
 
-                        // Verify the password
+                        // Verify the password using password_verify
                         if (password_verify($password, $hashed_password)) {
                             // Password is correct, start a new session
                             session_start();

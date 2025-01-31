@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../config/db.php';
-include '../includes/header.php';
+include 'includes/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     if (!isset($_SESSION['user_id'])) {

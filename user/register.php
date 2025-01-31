@@ -33,9 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 // Insert the user into the database
-                $query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+                $query = "INSERT INTO users (name, username, email, password) VALUES (:name, :username, :email, :password)";
                 $stmt = $conn->prepare($query);
                 $stmt->execute([
+                    ':name' => $username,
                     ':username' => $username,
                     ':email' => $email,
                     ':password' => $hashedPassword,
@@ -60,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../public/css/styles.css">
 </head>
 <body>
-    <?php include('../includes/header.php'); ?>
+    <?php include 'includes/header.php'; ?>
 
     <div class="container">
         <h1>Register</h1>

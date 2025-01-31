@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../config/db.php';
-include '../includes/header.php';
+include 'includes/header.php';
 
 // Fetch all products from the database
 $stmt = $conn->prepare("SELECT * FROM products");

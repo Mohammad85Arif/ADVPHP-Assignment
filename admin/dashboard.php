@@ -12,13 +12,31 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 // Fetch all products from the database
-$sql = "SELECT * FROM products";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$products = $stmt->fetchAll();
+$sql_products = "SELECT * FROM products";
+$stmt_products = $conn->prepare($sql_products);
+$stmt_products->execute();
+$products = $stmt_products->fetchAll();
+
+// Fetch all orders from the database
+$sql_orders = "
+    SELECT 
+        orders.id AS order_id, 
+        orders.total_price, 
+        orders.order_date, 
+        orders.order_status,
+        users.username AS user_name, 
+        users.email AS user_email
+    FROM orders
+    JOIN users ON orders.user_id = users.id
+    ORDER BY orders.order_date DESC
+";
+$stmt_orders = $conn->prepare($sql_orders);
+$stmt_orders->execute();
+$orders = $stmt_orders->fetchAll();
 
 // Close the database connection
-unset($stmt);
+unset($stmt_products);
+unset($stmt_orders);
 unset($conn);
 ?>
 
@@ -37,12 +55,13 @@ unset($conn);
 
         <div class="dashboard">
             <h2>Welcome, Admin!</h2>
-            <p>Manage your products here.</p>
+            <p>Manage your products and orders here.</p>
 
             <div class="dashboard-actions">
                 <a href="add_product.php" class="btn">Add Product</a>
             </div>
 
+            <!-- Product List -->
             <h3>Product List</h3>
             <table class="product-table">
                 <thead>
@@ -73,6 +92,40 @@ unset($conn);
                         }
                     } else {
                         echo "<tr><td colspan='5'>No products found</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+            <!-- Order List -->
+            <h3>Order List</h3>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Total Price</th>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Check if there are any orders and display them
+                    if ($orders) {
+                        foreach ($orders as $order) {
+                            echo "<tr>";
+                            echo "<td>" . $order['order_id'] . "</td>";
+                            echo "<td>" . $order['user_name'] . "</td>";
+                            echo "<td>" . $order['user_email'] . "</td>";
+                            echo "<td>$" . number_format($order['total_price'], 2) . "</td>";
+                            echo "<td>" . $order['order_date'] . "</td>";
+                            echo "<td>" . $order['order_status'] . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6'>No orders found</td></tr>";
                     }
                     ?>
                 </tbody>

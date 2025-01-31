@@ -68,7 +68,7 @@ unset($conn);
 </head>
 <body>
 
-    <?php include('../includes/header.php'); ?>
+    <?php include 'includes/header.php'; ?>
 
     <div class="container">
         <h2>Order Confirmation</h2>

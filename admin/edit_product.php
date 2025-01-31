@@ -25,14 +25,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $description = $_POST['description'];
+    $image = $product['image']; // Keep the old image by default
+
+    // Handle image upload
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $image_name = $_FILES['image']['name'];
+        $image_tmp_name = $_FILES['image']['tmp_name'];
+        $image_size = $_FILES['image']['size'];
+        $image_type = $_FILES['image']['type'];
+
+        // Check if file is an image
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        if (in_array($image_type, $allowed_types)) {
+            // Check file size (5MB limit)
+            if ($image_size <= 5000000) {
+                // Generate a unique filename to avoid overwriting
+                $image = 'images/' . uniqid() . '_' . $image_name;
+
+                // Move the uploaded file to the public/images/ folder
+                move_uploaded_file($image_tmp_name, "../public/" . $image);
+            } else {
+                $error = "Image size is too large. Please upload a file smaller than 5MB.";
+            }
+        } else {
+            $error = "Invalid image format. Only JPG, PNG, and GIF are allowed.";
+        }
+    }
 
     if (empty($name) || empty($price)) {
         $error = "Product name and price are required.";
     } else {
         // Update the product in the database
-        $update_query = "UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?";
+        $update_query = "UPDATE products SET name = ?, price = ?, description = ?, image = ? WHERE id = ?";
         $stmt = $conn->prepare($update_query);
-        $result = $stmt->execute([$name, $price, $description, $product_id]);
+        $result = $stmt->execute([$name, $price, $description, $image, $product_id]);
 
         if ($result) {
             $success = "Product updated successfully.";
@@ -66,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="success"><?php echo $success; ?></p>
         <?php endif; ?>
 
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Product Name:</label>
                 <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required>
@@ -78,6 +104,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea id="description" name="description" required><?php echo htmlspecialchars($product['description']); ?></textarea>
+            </div>
+            <!-- Image Upload -->
+            <div class="form-group">
+                <label for="image">Product Image (optional):</label>
+                <input type="file" name="image" id="image" class="form-control">
+                <?php if (!empty($product['image'])): ?>
+                    <p>Current Image: <img src="../public/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image" width="100"></p>
+                <?php endif; ?>
             </div>
             <button type="submit">Update Product</button>
         </form>
