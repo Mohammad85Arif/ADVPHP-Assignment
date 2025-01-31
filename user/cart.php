@@ -118,18 +118,34 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </form>
                             </td>
                             <td>$<?php echo number_format($subtotal, 2); ?></td>
-                            <td><a href="cart.php?remove=<?php echo $item["cart_id"]; ?>" class="btn-remove">Remove</a></td>
+                            <td><a href="cart.php?remove=<?php echo $item["cart_id"]; ?>" class="btn-remove" 
+   style="display: inline-block; padding: 8px 15px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; transition: background-color 0.3s ease, transform 0.3s ease;" 
+   onmouseover="this.style.backgroundColor='#c82333'; this.style.transform='scale(1.05)';" 
+   onmouseout="this.style.backgroundColor='#dc3545'; this.style.transform='scale(1)';" 
+   onfocus="this.style.boxShadow='0 0 10px rgba(0, 123, 255, 0.5)';" 
+   onblur="this.style.boxShadow='none';">
+    Remove
+</a></td>
+
                         </tr>
                         <?php $totalPrice += $subtotal; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             <h3>Total: $<?php echo number_format($totalPrice, 2); ?></h3>
-            <a href="checkout.php" class="btn-checkout">Proceed to Checkout</a>
+            <a href="checkout.php" class="btn-checkout" style="display: inline-block; padding: 12px 25px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease, transform 0.3s ease; margin-top: 20px;" 
+   onmouseover="this.style.backgroundColor='#218838'; this.style.transform='scale(1.05)';" 
+   onmouseout="this.style.backgroundColor='#28a745'; this.style.transform='scale(1)';" 
+   onfocus="this.style.boxShadow='0 0 10px rgba(0, 123, 255, 0.5)';" 
+   onblur="this.style.boxShadow='none';">
+    Proceed to Checkout
+</a>
+
         <?php else: ?>
             <p>Your cart is empty.</p>
             <!-- Back to User Page Button -->
-            <a href="../user/index.php" class="btn-back">Back to Homepage</a> <!-- Modify path if necessary -->
+            <a href="../user/index.php" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;">Back to User Page</a>
+
         <?php endif; ?>
     </div>
 </div>

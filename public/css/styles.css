@@ -402,18 +402,7 @@ nav {
         margin-bottom: 10px;
     }
 }
-.btn-back {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
-}
 
-.btn-back:hover {
-    background-color: #0056b3;
-}
+
 
 

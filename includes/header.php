@@ -16,14 +16,14 @@
             <nav>
                 <ul class="nav-tabs">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <!-- Home tab should link to admin dashboard if logged in -->
+                        <!-- Home tab should link to user dashboard if logged in -->
                         <li><a href="dashboard.php">Home</a></li>
                     <?php else: ?>
-                        <!-- Home tab links to the admin Login page if not logged in -->
+                        <!-- Home tab links to the admin / user Login page if not logged in -->
                         <li><a href="login.php">Home</a></li> 
                     <?php endif; ?>
                     <!-- Link the Products tab to user/products.php -->
-                    <li><a href="add_product.php">Add Products</a></li>
+                    <li><a href="register.php">Register</a></li>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         
                         <li><a href="dashboard.php">Dashboard</a></li>
